@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto: Divisibilidad y Números Enteros</title>
+    <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+
+    <header class="encabezado">
+        <h1>Proyecto: Divisibilidad y Números Enteros</h1>
+        <p>Matemáticas Discretas · Implementación en Python</p>
+    </header>
+
+    <main class="contenedor">
+
+        <div class="cuadricula">
+
+            <!-- Parte 1 -->
+            <div class="tarjeta">
+                <span class="etiqueta">Parte 1</span>
+                <h2>Algoritmo de la división</h2>
+                <p class="formula">Fórmula: a = b · q + r</p>
+
+                <form method="POST" class="formulario" data-parte="1">
+                    <input type="hidden" name="opcion" value="1">
+
+                    <label>Dividendo (a):</label>
+                    <input type="number" name="dividendo" required placeholder="Ejemplo: 45">
+
+                    <label>Divisor (b):</label>
+                    <input type="number" name="divisor" required placeholder="Ejemplo: 6">
+
+                    <button type="submit">Calcular división</button>
+
+                    <div id="resultado-1" class="caja-resultado"></div>
+                </form>
+            </div>
+
+            <!-- Parte 2 -->
+            <div class="tarjeta">
+                <span class="etiqueta">Parte 2</span>
+                <h2>Cambio de base (b &gt; 1)</h2>
+                <p class="formula">Convierte de base 10 a cualquier base b &gt; 1</p>
+
+                <form method="POST" class="formulario" data-parte="2">
+                    <input type="hidden" name="opcion" value="2">
+
+                    <label>Número entero (Base 10):</label>
+                    <input type="number" name="numero" required placeholder="Ejemplo: 255">
+
+                    <label>Nueva base (b &gt; 1):</label>
+                    <input type="number" name="base" required placeholder="Ejemplo: 2, 8, 16">
+
+                    <button type="submit">Convertir base</button>
+
+                    <div id="resultado-2" class="caja-resultado"></div>
+                </form>
+            </div>
+
+            <!-- Parte 3 -->
+            <div class="tarjeta">
+                <span class="etiqueta">Parte 3</span>
+                <h2>MCD por algoritmo de Euclides</h2>
+                <p class="formula">Calcula el Máximo Común Divisor de dos números</p>
+
+                <form method="POST" class="formulario" data-parte="3">
+                    <input type="hidden" name="opcion" value="3">
+
+                    <label>Primer número (a):</label>
+                    <input type="number" name="num_a" required placeholder="Ejemplo: 252">
+
+                    <label>Segundo número (b):</label>
+                    <input type="number" name="num_b" required placeholder="Ejemplo: 105">
+
+                    <button type="submit">Calcular MCD</button>
+
+                    <div id="resultado-3" class="caja-resultado"></div>
+                </form>
+            </div>
+
+            <!-- Parte 4 -->
+            <div class="tarjeta">
+                <span class="etiqueta">Parte 4</span>
+                <h2>Ecuaciones Diofánticas</h2>
+                <p class="formula">Ecuación lineal de la forma: a·x + b·y = c</p>
+
+                <form method="POST" class="formulario" data-parte="4">
+                    <input type="hidden" name="opcion" value="4">
+
+                    <div class="fila-tres">
+                        <div>
+                            <label>Valor de a:</label>
+                            <input type="number" name="coef_a" required placeholder="Ej. 24">
+                        </div>
+                        <div>
+                            <label>Valor de b:</label>
+                            <input type="number" name="coef_b" required placeholder="Ej. 36">
+                        </div>
+                        <div>
+                            <label>Valor de c:</label>
+                            <input type="number" name="coef_c" required placeholder="Ej. 12">
+                        </div>
+                    </div>
+
+                    <button type="submit">Resolver ecuación</button>
+
+                    <div id="resultado-4" class="caja-resultado"></div>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- envia los datos a python y muestra la respuesta abajo del boton -->
+    <script>
+        const formularios = document.querySelectorAll('.formulario');
+
+        formularios.forEach(function(form) {
+            form.addEventListener('submit', async function(evento) {
+                evento.preventDefault();
+
+                const parte = form.getAttribute('data-parte');
+                const caja = document.getElementById('resultado-' + parte);
+                const datos = new URLSearchParams(new FormData(form)).toString();
+
+                caja.classList.remove('mostrar');
+
+                const respuesta = await fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'fetch'
+                    },
+                    body: datos
+                });
+
+                const datosJson = await respuesta.json();
+
+                setTimeout(function() {
+                    caja.innerHTML = '<strong>Resultado:</strong><br>' + datosJson.resultado.replaceAll('  |  ', '<br>');
+                    caja.classList.add('mostrar');
+                }, 150);
+            });
+        });
+    </script>
+
+</body>
+</html>
