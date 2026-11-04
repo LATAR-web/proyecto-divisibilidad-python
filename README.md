@@ -65,6 +65,16 @@ python3 consola_secuencial.py
 
 ---
 
+## Integrantes del Equipo
+
+* **Antochu21** - GitHub: [@Antochu21](https://github.com/Antochu21)
+* **fj049939-cloud** - GitHub: [@fj049939-cloud](https://github.com/fj049939-cloud)
+* **Alejandro Oropeza Castellanos** - GitHub: [@alecoder792](https://github.com/alecoder792)
+* **Rodrigo Romero Piedras** - GitHub: [@CharleeFraser](https://github.com/CharleeFraser)
+* **LATAR-web** - GitHub: [@LATAR-web](https://github.com/LATAR-web)
+
+---
+
 ## Ejemplos de Prueba
 
 | Parte | Entrada de prueba | Resultado esperado |
