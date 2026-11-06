@@ -14,17 +14,17 @@ from algoritmos import (
 )
 
 
-# ciclo principal del menu en consola
+# Ciclo principal del menú en consola
 def iniciar_programa():
     opcion = 0
 
     while opcion != 5:
         limpiar_pantalla()
         mostrar_menu()
-        opcion = pedir_entero("Selecciona una opcion (1-5): ")
+        opcion = pedir_entero("Selecciona una opción (1-5): ")
 
         if opcion == 1:
-            mostrar_encabezado("1. ALGORITMO DE LA DIVISION")
+            mostrar_encabezado("1. ALGORITMO DE LA DIVISIÓN")
             a = pedir_entero("Ingresa el dividendo (a): ")
             b = pedir_entero("Ingresa el divisor (b): ")
             res = calcular_division(a, b)
@@ -32,23 +32,23 @@ def iniciar_programa():
             pausar()
 
         elif opcion == 2:
-            mostrar_encabezado("2. CAMBIO DE BASE (b > 1)")
-            num = pedir_entero("Ingresa el numero en base 10: ")
-            base = pedir_entero("Ingresa la nueva base (b > 1): ")
+            mostrar_encabezado("2. CAMBIO DE BASE (2 <= b <= 16)")
+            num = pedir_entero("Ingresa el número en base 10: ")
+            base = pedir_entero("Ingresa la nueva base (2 a 16): ")
             res = convertir_base(num, base)
             mostrar_resultado_caja([res])
             pausar()
 
         elif opcion == 3:
             mostrar_encabezado("3. MCD POR ALGORITMO DE EUCLIDES")
-            a = pedir_entero("Ingresa el primer numero (a): ")
-            b = pedir_entero("Ingresa el segundo numero (b): ")
+            a = pedir_entero("Ingresa el primer número (a): ")
+            b = pedir_entero("Ingresa el segundo número (b): ")
             res = calcular_mcd(a, b)
             mostrar_resultado_caja([res])
             pausar()
 
         elif opcion == 4:
-            mostrar_encabezado("4. ECUACIONES DIOFANTICAS (ax + by = c)")
+            mostrar_encabezado("4. ECUACIONES DIOFÁNTICAS (ax + by = c)")
             a = pedir_entero("Ingresa el valor de a: ")
             b = pedir_entero("Ingresa el valor de b: ")
             c = pedir_entero("Ingresa el valor de c: ")
@@ -60,7 +60,8 @@ def iniciar_programa():
             print("\n  Saliendo del programa...")
 
         else:
-            print("\n  Opcion no valida.")
+            print("\n  Opción no válida.")
+            pausar()
 
 
 if __name__ == "__main__":

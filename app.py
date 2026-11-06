@@ -9,61 +9,71 @@ from algoritmos import (
 )
 
 
-# lee el archivo html
+# Lee el archivo html
 def cargar_pagina():
     with open("templates/index.html", "r", encoding="utf-8") as archivo:
         return archivo.read()
 
 
-# revisa que opcion se eligio y llama a la funcion correspondiente
+# Revisa qué opción se eligió y llama a la función correspondiente
 def ejecutar_algoritmo(formulario):
     opcion = formulario.get("opcion", ["1"])[0]
     resultado = ""
 
-    if opcion == "1":
-        a = int(formulario["dividendo"][0])
-        b = int(formulario["divisor"][0])
-        resultado = calcular_division(a, b)
+    try:
+        if opcion == "1":
+            a = int(formulario["dividendo"][0])
+            b = int(formulario["divisor"][0])
+            resultado = calcular_division(a, b)
 
-    elif opcion == "2":
-        num = int(formulario["numero"][0])
-        base = int(formulario["base"][0])
-        resultado = convertir_base(num, base)
+        elif opcion == "2":
+            num = int(formulario["numero"][0])
+            base = int(formulario["base"][0])
+            resultado = convertir_base(num, base)
 
-    elif opcion == "3":
-        a = int(formulario["num_a"][0])
-        b = int(formulario["num_b"][0])
-        resultado = calcular_mcd(a, b)
+        elif opcion == "3":
+            a = int(formulario["num_a"][0])
+            b = int(formulario["num_b"][0])
+            resultado = calcular_mcd(a, b)
 
-    elif opcion == "4":
-        a = int(formulario["coef_a"][0])
-        b = int(formulario["coef_b"][0])
-        c = int(formulario["coef_c"][0])
-        resultado = resolver_diofantica(a, b, c)
+        elif opcion == "4":
+            a = int(formulario["coef_a"][0])
+            b = int(formulario["coef_b"][0])
+            c = int(formulario["coef_c"][0])
+            resultado = resolver_diofantica(a, b, c)
+
+    except (KeyError, ValueError):
+        resultado = "Error: Por favor ingresa números enteros válidos en todos los campos correspondientes."
 
     return opcion, resultado
 
 
 class ServidorDivisibilidad(BaseHTTPRequestHandler):
 
-    # carga la pagina y los estilos css
+    # Carga la página y los estilos CSS
     def do_GET(self):
         if self.path == "/static/estilos.css":
-            self.send_response(200)
-            self.send_header("Content-type", "text/css; charset=utf-8")
-            self.end_headers()
-            with open("static/estilos.css", "rb") as css:
-                self.wfile.write(css.read())
+            try:
+                self.send_response(200)
+                self.send_header("Content-type", "text/css; charset=utf-8")
+                self.end_headers()
+                with open("static/estilos.css", "rb") as css:
+                    self.wfile.write(css.read())
+            except FileNotFoundError:
+                self.send_error(404, "Archivo CSS no encontrado")
         else:
-            self.send_response(200)
-            self.send_header("Content-type", "text/html; charset=utf-8")
-            self.end_headers()
-            pagina = cargar_pagina()
-            self.wfile.write(pagina.encode("utf-8"))
+            try:
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=utf-8")
+                self.end_headers()
+                pagina = cargar_pagina()
+                self.wfile.write(pagina.encode("utf-8"))
+            except FileNotFoundError:
+                self.send_error(404, "Plantilla index.html no encontrada en /templates")
 
-    # recibe los datos del formulario y regresa el resultado
+    # Recibe los datos del formulario y regresa el resultado en JSON
     def do_POST(self):
-        longitud = int(self.headers["Content-Length"])
+        longitud = int(self.headers.get("Content-Length", 0))
         datos_bytes = self.rfile.read(longitud).decode("utf-8")
         formulario = parse_qs(datos_bytes)
 
@@ -76,7 +86,7 @@ class ServidorDivisibilidad(BaseHTTPRequestHandler):
         self.wfile.write(respuesta_json.encode("utf-8"))
 
 
-# inicia el servidor local en el puerto 5000
+# Inicia el servidor local en el puerto 5000
 if __name__ == "__main__":
     puerto = 5000
     HTTPServer.allow_reuse_address = True
@@ -90,4 +100,5 @@ if __name__ == "__main__":
     try:
         servidor.serve_forever()
     except KeyboardInterrupt:
+        print("\nServidor detenido.")
         servidor.server_close()
